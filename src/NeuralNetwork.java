@@ -33,9 +33,9 @@ public class NeuralNetwork {
     }
     // Method to print the network structure as a grid with centered neurons
     public void printNetworkGrid(int maxNeuronsInLayer) {
-        for (int i = 0; i < this.layers.size(); i++) {
+        for (Layer layer : this.layers) {
             // Calculate padding spaces needed to center-align the row
-            int padding = (maxNeuronsInLayer - this.layers.get(i).layer_size) / 2;
+            int padding = (maxNeuronsInLayer - layer.layer_size) / 2;
 
             // Print leading spaces for centering
             for (int j = 0; j < padding; j++) {
@@ -43,7 +43,7 @@ public class NeuralNetwork {
             }
 
             // Print "o" for each neuron in the current layer
-            for (int j = 0; j < this.layers.get(i).layer_size; j++) {
+            for (int j = 0; j < layer.layer_size; j++) {
                 System.out.print(" o ");
             }
 
