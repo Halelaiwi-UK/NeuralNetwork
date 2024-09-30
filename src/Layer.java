@@ -13,6 +13,15 @@ public class Layer {
         }
     }
 
+    public Layer(int layer_size, int input_size, String activationFunction){
+        this.layer_size = layer_size;
+        this.neurons = new Neuron[this.layer_size];
+        for (int i = 0; i < layer_size; i++) {
+            this.neurons[i] = new Neuron(input_size, activationFunction);
+        }
+    }
+
+    // feed the input to each neuron in the layer and store their outputs in a vector
     public RealVector compute_layer(RealVector input_vector){
         double[] output = new double[this.layer_size];
         for (int i = 0; i < this.layer_size; i++) {

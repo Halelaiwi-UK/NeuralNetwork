@@ -7,14 +7,27 @@ public class NeuralNetwork {
     ArrayList<Layer> layers;
     int prev_input_size;
     RealVector output;
+    String lossFunction;
+    double loss;
+
     public NeuralNetwork(int first_layer_size, int input_size){
         this.layers = new ArrayList<>();
         this.layers.add(new Layer(first_layer_size, input_size));
         this.prev_input_size = input_size;
     }
 
+    public NeuralNetwork(int first_layer_size, int input_size, String activationFunction){
+        this.layers = new ArrayList<>();
+        this.layers.add(new Layer(first_layer_size, input_size, activationFunction));
+        this.prev_input_size = input_size;
+    }
+
     public void add_layer(int layer_size){
         this.layers.add(new Layer(layer_size,this.prev_input_size));
+        this.prev_input_size = layer_size;
+    }
+    public void add_layer(int layer_size, String activationFunction){
+        this.layers.add(new Layer(layer_size,this.prev_input_size, activationFunction));
         this.prev_input_size = layer_size;
     }
 
@@ -25,6 +38,7 @@ public class NeuralNetwork {
     }
 
     public RealVector compute_network(double[] input){
+        // forward feed through the network
         output = new ArrayRealVector(input);
         for (Layer layer: this.layers) {
             output = layer.compute_layer(output);
@@ -49,5 +63,30 @@ public class NeuralNetwork {
 
             System.out.println();
         }
+    }
+
+    private void calculateLoss(double[] expected){
+        RealVector expectedVector = new ArrayRealVector(expected);
+        if (this.lossFunction.equalsIgnoreCase("mse")){
+            this.loss = meanSquaredError(expected);
+        }
+        else{
+            this.loss = meanAbsoluteError(expected);
+        }
+    }
+    public void setLossFunction(String lossFunction) {
+        this.lossFunction = lossFunction;
+    }
+
+
+    private double meanSquaredError(double[] expectedOutput){
+        RealVector expectedOutputVector = new ArrayRealVector(expectedOutput);
+        RealVector diff = expectedOutputVector.subtract(this.output);
+        return (diff.getNorm() * diff.getNorm()) / expectedOutputVector.getDimension();
+    }
+    private double meanAbsoluteError(double[] expectedOutput){
+        RealVector expectedOutputVector = new ArrayRealVector(expectedOutput);
+        RealVector diff = expectedOutputVector.subtract(this.output);
+        return diff.getL1Norm() / expectedOutputVector.getDimension();
     }
 }
