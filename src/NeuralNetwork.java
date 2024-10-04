@@ -1,3 +1,4 @@
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 
@@ -31,10 +32,17 @@ public class NeuralNetwork {
         this.prev_input_size = layer_size;
     }
 
-    public void set_weights(RealVector[][] weights){
+    public void set_weights(Array2DRowRealMatrix[] weights){
         for (int i = 0; i < this.layers.size(); i++) {
             this.layers.get(i).setWeights(weights[i]);
         }
+    }
+    public Array2DRowRealMatrix[] getWeights(){
+        Array2DRowRealMatrix[] weights = new Array2DRowRealMatrix[this.layers.size()];
+        for (int i = 0; i < this.layers.size(); i++) {
+            weights[i] = this.layers.get(i).getWeights();
+        }
+        return weights;
     }
 
     public RealVector compute_network(double[] input){

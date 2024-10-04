@@ -4,9 +4,9 @@ import org.apache.commons.math3.linear.RealVector;
 import java.util.*;
 
 public class Neuron {
-    RealVector weights;
-    String activationFunction = "Relu";
-    double bias;
+    private RealVector weights;
+    private String activationFunction = "Relu";
+    private double bias;
     double LeakyRelu_alpha = 0.1;
 
     // Initialize the neuron with random weights and bias
@@ -37,8 +37,8 @@ public class Neuron {
         return activation_function(this.weights.dotProduct(input_array) + this.bias);
     }
 
-    public void setWeights(RealVector weights) {
-        this.weights = weights;
+    public void setWeights(double[] new_weights) {
+        this.weights = new ArrayRealVector(new_weights);
     }
 
     public void setBias(double bias) {

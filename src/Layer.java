@@ -1,3 +1,4 @@
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 
@@ -31,17 +32,28 @@ public class Layer {
         return new ArrayRealVector(output);
     }
 
-    public void setWeights(RealVector[] weights){
+    // TODO: change to Matrix input
+    public void setWeights(Array2DRowRealMatrix weights){
         for (int i = 0; i < this.layer_size; i++) {
-            this.neurons[i].weights = weights[i];
+            this.neurons[i].setWeights(weights.getRow(i));
         }
     }
 
+    public Array2DRowRealMatrix getWeights(){
+        Array2DRowRealMatrix weights = new Array2DRowRealMatrix(this.layer_size, this.neurons[0].getWeights().getDimension());
+        for (int i = 0; i < this.layer_size; i++) {
+            weights.setRow(i, this.neurons[i].getWeights().toArray());
+        }
+        return weights;
+    }
     public void print_weights(){
         for (int i = 0; i < this.layer_size; i++) {
-            for (int j = 0; j < this.neurons[i].weights.getDimension(); j++) {
-                System.out.println(this.neurons[i].weights.getEntry(j));
+            System.out.print("   ");
+            System.out.print("Neuron " + (i+1) + " {");
+            for (int j = 0; j < this.neurons[i].getWeights().getDimension(); j++) {
+                System.out.print(this.neurons[i].getWeights().getEntry(j) + ", ");
             }
+            System.out.println("}");
         }
     }
 }
