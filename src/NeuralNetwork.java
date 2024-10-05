@@ -73,28 +73,12 @@ public class NeuralNetwork {
         }
     }
 
-    private void calculateLoss(double[] expected){
+    private double calculateLoss(double[] expected){
         RealVector expectedVector = new ArrayRealVector(expected);
-        if (this.lossFunction.equalsIgnoreCase("mse")){
-            this.loss = meanSquaredError(expected);
-        }
-        else{
-            this.loss = meanAbsoluteError(expected);
-        }
+        this.loss = CustomFunctions.loss_function(this.output, expectedVector, this.lossFunction);
+        return this.loss;
     }
     public void setLossFunction(String lossFunction) {
         this.lossFunction = lossFunction;
-    }
-
-
-    private double meanSquaredError(double[] expectedOutput){
-        RealVector expectedOutputVector = new ArrayRealVector(expectedOutput);
-        RealVector diff = expectedOutputVector.subtract(this.output);
-        return (diff.getNorm() * diff.getNorm()) / expectedOutputVector.getDimension();
-    }
-    private double meanAbsoluteError(double[] expectedOutput){
-        RealVector expectedOutputVector = new ArrayRealVector(expectedOutput);
-        RealVector diff = expectedOutputVector.subtract(this.output);
-        return diff.getL1Norm() / expectedOutputVector.getDimension();
     }
 }
