@@ -4,6 +4,7 @@ import org.apache.commons.math3.linear.RealVector;
 /**
  * Class to handle all mathematical loss and activation functions
  */
+
 public class CustomFunctions {
 
     public static double activation_function(double output, String activationFunction){

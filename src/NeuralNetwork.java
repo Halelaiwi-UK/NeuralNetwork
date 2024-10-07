@@ -1,5 +1,6 @@
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class NeuralNetwork {
         }
         return output;
     }
+
+    // TODO: Backpropagation method to calibrate weights
+    public void train(RealVector[] input, RealVector expected_output, int epochs, double alpha){}
     // Method to print the network structure as a grid with centered neurons
     public void printNetworkGrid(int maxNeuronsInLayer) {
         for (Layer layer : this.layers) {

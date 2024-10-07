@@ -6,7 +6,8 @@ public class Neuron {
     private RealVector weights;
     private String activationFunction = "Relu";
     private double bias;
-    double LeakyRelu_alpha = 0.1;
+    // Learning rate
+    double alpha = 0.1;
 
     // Initialize the neuron with random weights and bias
     public Neuron(int input_size){
@@ -53,7 +54,7 @@ public class Neuron {
     }
 
     private double activation_function(double output){
-        // input, activation function name, leaky_relu alpha if available -> output
-        return CustomFunctions.activation_function(output, this.activationFunction, this.LeakyRelu_alpha);
+        // func(input, activation function name, alpha if using leaky relu) -> output
+        return CustomFunctions.activation_function(output, this.activationFunction, this.alpha);
     }
 }

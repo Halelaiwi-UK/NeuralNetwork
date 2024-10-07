@@ -32,7 +32,6 @@ public class Layer {
         return new ArrayRealVector(output);
     }
 
-    // TODO: change to Matrix input
     public void setWeights(Array2DRowRealMatrix weights){
         for (int i = 0; i < this.layer_size; i++) {
             this.neurons[i].setWeights(weights.getRow(i));
@@ -53,7 +52,7 @@ public class Layer {
             for (int j = 0; j < this.neurons[i].getWeights().getDimension(); j++) {
                 System.out.print(this.neurons[i].getWeights().getEntry(j) + ", ");
             }
-            System.out.println("}");
+            System.out.println("} bias {" + this.neurons[i].getBias() + "}");
         }
     }
 }
