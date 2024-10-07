@@ -1,6 +1,8 @@
+import ActivationFunctions.ActivationFunction;
+import LossFunctions.LossFunction;
+import LossFunctions.MeanSquaredError;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import java.util.ArrayList;
@@ -8,17 +10,20 @@ import java.util.ArrayList;
 public class NeuralNetwork {
     ArrayList<Layer> layers;
     int prev_input_size;
+
     RealVector output;
-    String lossFunction;
+
+    LossFunction lossFunction;
     double loss;
 
     public NeuralNetwork(int first_layer_size, int input_size){
         this.layers = new ArrayList<>();
         this.layers.add(new Layer(first_layer_size, input_size));
         this.prev_input_size = input_size;
+        this.lossFunction = new MeanSquaredError();
     }
 
-    public NeuralNetwork(int first_layer_size, int input_size, String activationFunction){
+    public NeuralNetwork(int first_layer_size, int input_size, ActivationFunction activationFunction){
         this.layers = new ArrayList<>();
         this.layers.add(new Layer(first_layer_size, input_size, activationFunction));
         this.prev_input_size = input_size;
@@ -28,7 +33,7 @@ public class NeuralNetwork {
         this.layers.add(new Layer(layer_size,this.prev_input_size));
         this.prev_input_size = layer_size;
     }
-    public void add_layer(int layer_size, String activationFunction){
+    public void add_layer(int layer_size, ActivationFunction activationFunction){
         this.layers.add(new Layer(layer_size,this.prev_input_size, activationFunction));
         this.prev_input_size = layer_size;
     }
@@ -56,7 +61,26 @@ public class NeuralNetwork {
     }
 
     // TODO: Backpropagation method to calibrate weights
-    public void train(RealVector[] input, RealVector expected_output, int epochs, double alpha){}
+    public void Backpropagate(RealVector[] gradients){
+//        // Iterate through the layers in reverse order
+//        for (int i = layers.size() - 1; i >= 0; i--) {
+//            Layer layer = layers.get(i);
+//
+//            // Calculate the gradient for the current layer
+//            RealVector delta = layer.calculateGradient(gradients);
+//
+//            // Update the gradients for weights and biases
+//            RealMatrix weightGradients = layer.calculateWeightGradients(delta);
+//            RealVector biasGradients = layer.calculateBiasGradients(delta);
+//
+//            // Store the gradients in the layer
+//            layer.setWeightGradients(weightGradients);
+//            layer.setBiasGradients(biasGradients);
+//
+//            // Prepare gradients for the previous layer
+//            gradients = layer.getInputGradients(delta);
+//        }
+    }
     // Method to print the network structure as a grid with centered neurons
     public void printNetworkGrid(int maxNeuronsInLayer) {
         for (Layer layer : this.layers) {
@@ -79,10 +103,11 @@ public class NeuralNetwork {
 
     private double calculateLoss(double[] expected){
         RealVector expectedVector = new ArrayRealVector(expected);
-        this.loss = CustomFunctions.loss_function(this.output, expectedVector, this.lossFunction);
+        this.loss = this.lossFunction.computeLoss(this.output, expectedVector);
         return this.loss;
     }
-    public void setLossFunction(String lossFunction) {
+
+    public void setLossFunction(LossFunction lossFunction) {
         this.lossFunction = lossFunction;
     }
 }

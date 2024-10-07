@@ -1,3 +1,4 @@
+import ActivationFunctions.ActivationFunction;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
@@ -14,7 +15,7 @@ public class Layer {
         }
     }
 
-    public Layer(int layer_size, int input_size, String activationFunction){
+    public Layer(int layer_size, int input_size, ActivationFunction activationFunction){
         this.layer_size = layer_size;
         this.neurons = new Neuron[this.layer_size];
         for (int i = 0; i < layer_size; i++) {

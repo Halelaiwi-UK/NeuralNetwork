@@ -1,10 +1,12 @@
+import ActivationFunctions.*;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
-import java.util.*;
+
+import java.util.Random;
 
 public class Neuron {
     private RealVector weights;
-    private String activationFunction = "Relu";
+    private ActivationFunction activationFunction;
     private double bias;
     // Learning rate
     double alpha = 0.1;
@@ -17,15 +19,18 @@ public class Neuron {
         double[] init_weights = random.doubles(input_size).map(_ -> random.nextGaussian()).toArray();
         this.weights = new ArrayRealVector(init_weights);
         this.bias = random.nextGaussian();
+
+        this.activationFunction = new Sigmoid(); // default to sigmoid
     }
 
-    public Neuron(int input_size, String activation_function){
+    public Neuron(int input_size, ActivationFunction activation_function){
         Random random = new Random();
-        this.activationFunction = activation_function;
         // Create a random array, then map the values to a random Gaussian distribution
         double[] init_weights = random.doubles(input_size).map(_ -> random.nextGaussian()).toArray();
         this.weights = new ArrayRealVector(init_weights);
         this.bias = random.nextGaussian();
+
+        this.activationFunction = activation_function;
     }
 
     public double compute_neuron(RealVector input_array){
@@ -34,7 +39,7 @@ public class Neuron {
                     + input_array.getDimension() + " != " + this.weights.getDimension());
         }
 
-        return activation_function(this.weights.dotProduct(input_array) + this.bias);
+        return this.activationFunction.apply(this.weights.dotProduct(input_array) + this.bias);
     }
 
     public void setWeights(double[] new_weights) {
@@ -53,8 +58,4 @@ public class Neuron {
         return bias;
     }
 
-    private double activation_function(double output){
-        // func(input, activation function name, alpha if using leaky relu) -> output
-        return CustomFunctions.activation_function(output, this.activationFunction, this.alpha);
-    }
 }

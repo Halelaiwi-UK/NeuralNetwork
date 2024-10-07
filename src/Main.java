@@ -1,9 +1,10 @@
+import ActivationFunctions.LeakyRelu;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 
 public class Main {
     public static void main(String[] args) {
         NeuralNetwork network = new NeuralNetwork(2, 2);
-        network.add_layer(1, "leaky_relu");
+        network.add_layer(1, new LeakyRelu(1));
         Array2DRowRealMatrix[] weights = network.getWeights();
         for (Array2DRowRealMatrix weight : weights) {
             System.out.println(weight.toString());
